@@ -56,3 +56,80 @@ Câu A5 (5đ) — So sánh `<figure>` vs `<img>`
 2. Dùng Cách 2 (`<figure>` + `<figcaption>`) khi ảnh cần chú thích, giải thích, hoặc là một đơn vị nội dung độc lập có thể được tham chiếu riêng. Ví dụ thực tế:
     - Ảnh sản phẩm kèm giá và tên trong trang chi tiết
     - Ảnh biểu đồ, sơ đồ hoặc infographic kèm chú thích nguồn dữ liệu
+
+---
+
+PHẦN C — PHÂN TÍCH & SUY LUẬN (20 điểm)
+
+**Câu C1 (10đ) — Debug Form**
+
+**8 lỗi tìm được:**
+
+1. **Lỗi:** Input "Tên" không có `<label>`, vi phạm accessibility và không có liên kết với label.
+   **Sửa:** Thêm `<label for="name">Tên:</label>` và `id="name"` vào input.
+
+2. **Lỗi:** Input email không có `<label>`, khiến screen reader không biết đây là trường gì.
+   **Sửa:** Thêm `<label for="email">Email:</label>` + `id="email"` cho input.
+
+3. **Lỗi:** Input email không có `name` attribute, form không thể gửi dữ liệu.
+   **Sửa:** Thêm `name="email"` vào input.
+
+4. **Lỗi:** 2 input password không có `id`, `name`, `required`, khó xử lý với JavaScript.
+   **Sửa:** Thêm `id="password"` + `name="password"` + `id="confirm_password"` + `name="confirm_password"` + `required`.
+
+5. **Lỗi:** Input phone dùng `type="text"` thay vì `type="tel"`, không tối ưu trên di động (không mở bàn phím số).
+   **Sửa:** Đổi thành `type="tel"` và thêm `pattern="[0-9]{10}"` để kiểm tra 10 chữ số.
+
+6. **Lỗi:** Input phone không có `<label>`.
+   **Sửa:** Thêm `<label for="phone">Phone:</label>` + `id="phone"`.
+
+7. **Lỗi:** `<select>` không có `name` attribute, `<label>` gắn với nó, và không có `required`.
+   **Sửa:** Thêm `id="city"` + `name="city"` + `<label for="city">Thành phố:</label>` + `required`.
+
+8. **Lỗi:** Checkbox điều khoản không có `id`, không có `name`, không có `required`.
+   **Sửa:** Thêm `<input type="checkbox" id="terms" name="terms" required>` rồi `<label for="terms">Tôi đồng ý điều khoản</label>`.
+
+---
+
+**Câu C2 (10đ) — Thiết kế chiến lược Validation**
+
+**Pattern Regex cho CMND/CCCD và Số tài khoản:**
+
+1. CMND/CCCD (đúng 12 chữ số): `^[0-9]{12}$`
+2. Số tài khoản (10-15 chữ số): `^[0-9]{10,15}$`
+
+**Giải thích Pattern:**
+- `^` = bắt đầu chuỗi
+- `[0-9]` = ký tự từ 0-9
+- `{12}` = lặp đúng 12 lần
+- `{10,15}` = lặp từ 10 đến 15 lần
+- `$` = kết thúc chuỗi
+
+---
+
+**HTML5 validation đủ an toàn cho ứng dụng ngân hàng?**
+
+**Trả lời: KHÔNG, vì:**
+
+1. **Frontend validation dễ bị vượt qua**: Attacker có thể disable JavaScript, dùng DevTools sửa HTML, hoặc gửi request trực tiếp bypass form.
+2. **Chỉ là trải nghiệm UX, không phải bảo mật**: HTML validation là feedback tức thời cho user, nhưng không đảm bảo dữ liệu hợp lệ đến server.
+3. **Phải validate lại trên Backend**: Mọi dữ liệu từ client đều phải kiểm tra trên server trước khi lưu database hoặc xử lý tiền bạc.
+
+---
+
+**3 loại validation HTML5 KHÔNG THỂ làm:**
+
+1. **Kiểm tra độc nhất (Uniqueness)**: Ví dụ, kiểm tra email/CMND chưa được đăng ký. Phải query database từ server.
+2. **Kiểm tra luật kinh doanh**: Ví dụ, tài khoản chỉ mở được cho độc tuổi ≥ 18 tuổi, hoặc số dư tài khoản ≥ số tiền gửi. Cần logic phức tạp từ server.
+3. **Kiểm tra phụ thuộc giữa các field**: Ví dụ, nếu chọn "chuyển khoản" thì phải nhập số tài khoản và mã ngân hàng, không thể confirm password = password (như bài B1 đã nói).
+
+---
+
+**2 rủi ro bảo mật nếu chỉ validate Frontend:**
+
+1. **Bypass validation mà không submit form**: Attacker dùng browser console (JavaScript) hoặc DevTools để xóa `required`, `pattern`, `minlength`... hoặc gửi request HTTP thô mà không qua form.
+   **Kết quả:** Dữ liệu sai định dạng, không phải số điện thoại 10 chữ số, hay CMND 8 chữ số được gửi tới server.
+
+2. **Đánh cắp thông tin nhạy cảm từ dữ liệu đã nhập**: Nếu form chứa mật khẩu, PIN, số CMND và chỉ validate ở client, attacker có thể xem dữ liệu trong HTML hoặc JavaScript memory.
+   **Kết quả:** Thông tin nhạy cảm bị lộ, tài khoản bị mở, tiền bị chuyển khoản trái phép.
+   **Giải pháp:** HTTPS để mã hóa dữ liệu truyền trên mạng, KHÔNG lưu mật khẩu/PIN trong cookie/localStorage, validate lại trên server, hash mật khẩu trước khi lưu.
