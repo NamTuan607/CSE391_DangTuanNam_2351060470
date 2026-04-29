@@ -28,3 +28,31 @@ So sánh:
     - Trường hợp 3 : Đúng dự đoán
     - Trường hợp 4 : Đúng dự đoán
     - Trường hợp 5 : chặn form
+
+Câu A3 (5đ) — Accessibility
+1. `<label for="email">` rất quan trọng với screen reader vì nó gắn nhãn rõ ràng cho ô nhập. Khi người dùng di chuyển tới input, screen reader sẽ đọc tên trường là “Email”, giúp họ hiểu họ đang nhập gì mà không cần nhìn giao diện.
+2. Dùng `<fieldset>` + `<legend>` khi cần nhóm các trường có cùng ý nghĩa. Ví dụ: nhóm chọn phương thức thanh toán hoặc giới tính.
+```html
+<fieldset>
+     <legend>Phương thức thanh toán</legend>
+     <label><input type="radio" name="payment" value="cod"> Thanh toán khi nhận hàng</label>
+     <label><input type="radio" name="payment" value="card"> Thẻ ngân hàng</label>
+</fieldset>
+```
+3. `aria-label` dùng khi phần tử không có nhãn hiển thị rõ ràng trên giao diện, ví dụ nút chỉ có biểu tượng kính lúp hoặc nút đóng `X`. Không nên dùng `aria-label` khi đã có `<label>` vì nó dễ tạo ra nhãn trùng lặp, làm nội dung khó bảo trì, và có thể khiến nhãn hiển thị và nhãn truy cập bị lệch nhau.
+
+Câu A4 (5đ) — Media
+1. `loading="lazy"` trên thẻ `<img>` yêu cầu trình duyệt chỉ tải ảnh khi ảnh sắp xuất hiện trong vùng nhìn thấy. Nó giúp giảm thời gian tải ban đầu, tiết kiệm băng thông và cải thiện hiệu năng trang. Không nên dùng cho ảnh quan trọng ở phía trên màn hình, ảnh hero, logo, hoặc ảnh đầu tiên cần hiển thị ngay vì có thể làm chậm nội dung quan trọng.
+2. Nên cung cấp nhiều `<source>` trong thẻ `<video>` để trình duyệt tự chọn định dạng nó hỗ trợ tốt nhất. Điều này tăng khả năng tương thích giữa các trình duyệt và thiết bị. Ba format video web phổ biến là MP4, WebM và Ogg.
+3. Thuộc tính `alt` dùng để mô tả nội dung ảnh cho screen reader, hiển thị khi ảnh lỗi, và hỗ trợ SEO. Alt tốt cho 3 trường hợp:
+    - Ảnh sản phẩm iPhone 16: `iPhone 16 Pro Max 256GB màu Titan`
+    - Ảnh trang trí (decorative): để trống `alt=""`
+    - Ảnh biểu đồ doanh thu Q1/2026: `Biểu đồ doanh thu quý 1 năm 2026 tăng dần từ tháng 1 đến tháng 3`
+
+Câu A5 (5đ) — So sánh `<figure>` vs `<img>`
+1. Dùng Cách 1 (`<img>`) khi ảnh chỉ có nhiệm vụ hiển thị nội dung trực quan, không cần chú thích riêng hoặc không cần tách thành một khối nội dung độc lập. Ví dụ thực tế:
+    - Ảnh đại diện sản phẩm trong lưới danh sách sản phẩm
+    - Logo thương hiệu ở header
+2. Dùng Cách 2 (`<figure>` + `<figcaption>`) khi ảnh cần chú thích, giải thích, hoặc là một đơn vị nội dung độc lập có thể được tham chiếu riêng. Ví dụ thực tế:
+    - Ảnh sản phẩm kèm giá và tên trong trang chi tiết
+    - Ảnh biểu đồ, sơ đồ hoặc infographic kèm chú thích nguồn dữ liệu
