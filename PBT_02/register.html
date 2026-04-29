@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký Tài khoản — Shop TLU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            background-color: #fafafa;
+        }
+        legend {
+            font-weight: 600;
+            color: #333;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        label {
+            font-weight: 500;
+            color: #333;
+            font-size: 14px;
+        }
+        label.required::after {
+            content: ' *';
+            color: red;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="password"],
+        select,
+        textarea {
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        input[type="password"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 8px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        input[type="radio"] {
+            cursor: pointer;
+        }
+        .radio-item label {
+            margin: 0;
+            cursor: pointer;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        input[type="checkbox"] {
+            cursor: pointer;
+            margin-top: 4px;
+        }
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button[type="submit"] {
+            background-color: #0066cc;
+            color: white;
+            flex: 1;
+        }
+        button[type="submit"]:hover {
+            background-color: #0052a3;
+        }
+        button[type="submit"]:active {
+            transform: scale(0.98);
+        }
+        button[type="reset"] {
+            background-color: #e0e0e0;
+            color: #333;
+            flex: 1;
+        }
+        button[type="reset"]:hover {
+            background-color: #d0d0d0;
+        }
+        button[type="reset"]:active {
+            transform: scale(0.98);
+        }
+        .error-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Đăng ký Tài khoản</h1>
+        <form action="#" method="POST">
+            <!-- Fieldset 1: Thông tin cá nhân -->
+            <fieldset>
+                <legend>Thông tin cá nhân</legend>
+
+                <div class="form-group">
+                    <label for="fullname" class="required">Họ tên</label>
+                    <input 
+                        type="text" 
+                        id="fullname" 
+                        name="fullname" 
+                        required 
+                        minlength="2" 
+                        maxlength="50"
+                        placeholder="Nhập họ tên đầy đủ"
+                        aria-describedby="fullname-hint"
+                    >
+                    <span id="fullname-hint" class="error-hint">Từ 2 đến 50 ký tự</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="required">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        placeholder="example@gmail.com"
+                        aria-describedby="email-hint"
+                    >
+                    <span id="email-hint" class="error-hint">Nhập email hợp lệ</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="required">Số điện thoại</label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        required 
+                        pattern="[0-9]{10}"
+                        placeholder="0123456789"
+                        aria-describedby="phone-hint"
+                    >
+                    <span id="phone-hint" class="error-hint">Nhập đúng 10 chữ số (ví dụ: 0912345678)</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthdate" class="required">Ngày sinh</label>
+                    <input 
+                        type="date" 
+                        id="birthdate" 
+                        name="birthdate" 
+                        required 
+                        max="2026-04-30"
+                        aria-describedby="birthdate-hint"
+                    >
+                    <span id="birthdate-hint" class="error-hint">Không thể chọn ngày tương lai</span>
+                </div>
+            </fieldset>
+
+            <!-- Fieldset 2: Tài khoản -->
+            <fieldset>
+                <legend>Tài khoản</legend>
+
+                <div class="form-group">
+                    <label for="username" class="required">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        required 
+                        pattern="[a-zA-Z0-9_]{3,20}"
+                        placeholder="user_name_123"
+                        aria-describedby="username-hint"
+                    >
+                    <span id="username-hint" class="error-hint">3–20 ký tự, chỉ chứa chữ cái, số, dấu gạch dưới</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="required">Mật khẩu</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required 
+                        minlength="8"
+                        pattern="(?=.*[A-Z])(?=.*[0-9]).*"
+                        placeholder="Mật khẩu bảo mật"
+                        aria-describedby="password-hint"
+                    >
+                    <span id="password-hint" class="error-hint">Tối thiểu 8 ký tự, ít nhất 1 chữ hoa và 1 số</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="required">Xác nhận mật khẩu</label>
+                    <input 
+                        type="password" 
+                        id="confirm_password" 
+                        name="confirm_password" 
+                        required 
+                        minlength="8"
+                        pattern="(?=.*[A-Z])(?=.*[0-9]).*"
+                        placeholder="Nhập lại mật khẩu"
+                        aria-describedby="confirm-password-hint"
+                    >
+                    <span id="confirm-password-hint" class="error-hint">Nhập lại mật khẩu (HTML không thể so sánh tự động)</span>
+                </div>
+            </fieldset>
+
+            <!-- Fieldset 3: Thông tin giao hàng -->
+            <fieldset>
+                <legend>Thông tin giao hàng</legend>
+
+                <div class="form-group">
+                    <label for="city" class="required">Thành phố/Tỉnh</label>
+                    <select id="city" name="city" required aria-describedby="city-hint">
+                        <option value="">-- Chọn thành phố --</option>
+                        <option value="hanoi">Hà Nội</option>
+                        <option value="hcm">TP. Hồ Chí Minh</option>
+                        <option value="danang">Đà Nẵng</option>
+                        <option value="haiphong">Hải Phòng</option>
+                        <option value="cantho">Cần Thơ</option>
+                    </select>
+                    <span id="city-hint" class="error-hint">Vui lòng chọn thành phố</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="district">Quận/Huyện</label>
+                    <select id="district" name="district" aria-describedby="district-hint">
+                        <option value="">-- Chọn quận/huyện --</option>
+                        <option value="ba-dinh">Ba Đình</option>
+                        <option value="dong-da">Đống Đa</option>
+                        <option value="hai-ba-trung">Hai Bà Trưng</option>
+                        <option value="hoan-kiem">Hoàn Kiếm</option>
+                        <option value="tay-ho">Tây Hồ</option>
+                    </select>
+                    <span id="district-hint" class="error-hint">Vui lòng chọn quận/huyện</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="address" class="required">Địa chỉ chi tiết</label>
+                    <textarea 
+                        id="address" 
+                        name="address" 
+                        required 
+                        rows="3"
+                        placeholder="Số nhà, tên đường, phường/xã"
+                        aria-describedby="address-hint"
+                    ></textarea>
+                    <span id="address-hint" class="error-hint">Nhập địa chỉ giao hàng chi tiết</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Giới tính</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input 
+                                type="radio" 
+                                id="gender_male" 
+                                name="gender" 
+                                value="male" 
+                                required
+                            >
+                            <label for="gender_male">Nam</label>
+                        </div>
+                        <div class="radio-item">
+                            <input 
+                                type="radio" 
+                                id="gender_female" 
+                                name="gender" 
+                                value="female"
+                            >
+                            <label for="gender_female">Nữ</label>
+                        </div>
+                        <div class="radio-item">
+                            <input 
+                                type="radio" 
+                                id="gender_other" 
+                                name="gender" 
+                                value="other"
+                            >
+                            <label for="gender_other">Khác</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Checkbox điều khoản -->
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input 
+                        type="checkbox" 
+                        id="terms" 
+                        name="terms" 
+                        required
+                    >
+                    <label for="terms">
+                        Tôi đồng ý với <strong>Điều khoản dịch vụ</strong> và <strong>Chính sách bảo mật</strong> của Shop TLU
+                    </label>
+                </div>
+            </div>
+
+            <!-- Nút Submit và Reset -->
+            <div class="button-group">
+                <button type="submit">Đăng ký</button>
+                <button type="reset">Xóa</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
