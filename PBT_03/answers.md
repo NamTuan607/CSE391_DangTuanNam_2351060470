@@ -114,3 +114,111 @@ p { color: black !important; }
   !important là lựa chọn cuối cùng, nó vô hiệu hóa cascade bình thường
   Thứ tự ưu tiên: Inline !important > !important > Inline > ID > Class > Element
 
+Phần B: Thực hành
+
+Câu B1
+
+Danh sách selector đã dùng trong `style.css`:
+
+- Universal selector: `*`
+- Element selectors: `body`, `header`, `nav`, `main`, `figure`, `section`, `aside`, `table`, `thead`, `tbody`, `tfoot`, `footer`
+- Class selectors: `.active` (sử dụng trong `nav a.active`)
+- ID selectors: `#ve-toi`, `#ky-nang`, `#lien-he`
+- Descendant / combined selectors: `nav a`, `section h2`, `aside h2`, `thead th`, `tbody td`, `tfoot td`, `nav a.active`
+- Pseudo-class selectors: `nav a:hover`, `tbody tr:nth-child(even)`, `tbody tr:hover`
+
+Ghi chú: Một số selector là kết hợp (ví dụ `nav a.active` kết hợp descendant và class).
+
+Câu B2
+
+Phần 1:
+    Hộp 1: chiều rộng thực tế 350px
+    Hộp 2: chiều rộng thực tế 300px
+Sự khác biệt: 
+    Hộp 1 tổng chiểu rộng = width + padding + border
+    Hộp 2 width = 300 = content + padding + border
+
+Phần 2:
+    Không dùng border-box: content = width + padding + border 
+                                   = 500 + 20*2 + 2*2 
+                                   = 544px (tràn viền)
+
+    Dùng border-box: content = width = 500px (vừa khít layout)
+
+## Câu B3 (15đ) — Specificity Battle
+
+### Phần 1: Liệt kê 10 CSS rules + Specificity Score
+
+```css
+/* Specificity: (0, 0, 1) */
+p { color: blue; }
+
+/* Specificity: (0, 1, 0) */
+.text { color: green; }
+
+/* Specificity: (0, 1, 0) */
+.highlight { color: orange; }
+
+/* Specificity: (0, 1, 1) */
+p.text { color: purple; }
+
+/* Specificity: (0, 1, 1) */
+p.highlight { color: brown; }
+
+/* Specificity: (0, 2, 0) */
+.text.highlight { color: pink; }
+
+/* Specificity: (0, 2, 1) */
+p.text.highlight { color: gray; }
+
+/* Specificity: (1, 0, 0) */
+#demo { color: red; }
+
+/* Specificity: (1, 1, 0) */
+#demo.text { color: navy; }
+
+/* Specificity: (1, 2, 0) - HIGHEST */
+#demo.text.highlight { color: yellow; }
+```
+
+### Phần 2: Element cuối cùng hiển thị màu gì? Tại sao?
+
+**Màu sắc cuối cùng: YELLOW** (vàng)
+
+**Giải thích:**
+- Element `<p id="demo" class="text highlight">` được match bởi tất cả 10 rules.
+- Quy tắc Specificity trong CSS:
+  - **ID selector** có độ ưu tiên cao nhất (1, x, x)
+  - **Class/Pseudo-class** đứng giữa (0, x, x)
+  - **Element selector** có độ ưu tiên thấp nhất (0, 0, x)
+  
+- Sắp xếp specificity từ thấp đến cao:
+  ```
+  (0,0,1) < (0,1,0) = (0,1,0) < (0,1,1) = (0,1,1) < (0,2,0) < (0,2,1) < (1,0,0) < (1,1,0) < (1,2,0)
+  ```
+  
+- Rule `#demo.text.highlight { color: yellow; }` có **specificity cao nhất (1, 2, 0)**, nên nó là winner.
+
+### Phần 3: Thay đổi thứ tự rules - Kết quả có đổi không?
+
+**Câu trả lời: KHÔNG thay đổi**
+
+**Giải thích:**
+- CSS không dựa vào **thứ tự khai báo** trong file CSS mà dựa vào **Specificity**.
+- Dù bạn đặt rule `#demo.text.highlight` ở đầu hay cuối file, nó vẫn là winner.
+- Thứ tự khai báo chỉ quan trọng khi **Specificity bằng nhau**. Lúc đó rule được viết sau sẽ override rule được viết trước.
+- Vì vậy, không thay đổi thứ tự rules không ảnh hưởng đến kết quả cuối cùng.
+
+**Ví dụ:**
+```css
+/* Dù viết như này */
+p { color: blue; }
+#demo.text.highlight { color: yellow; }
+```
+hoặc
+```css
+/* Hay viết như này */
+#demo.text.highlight { color: yellow; }
+p { color: blue; }
+```
+**Kết quả vẫn luôn là YELLOW**, vì specificity của `#demo.text.highlight` luôn cao hơn `p`.

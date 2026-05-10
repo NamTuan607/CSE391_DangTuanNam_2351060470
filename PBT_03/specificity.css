@@ -1,0 +1,66 @@
+/* Specificity Battle - 10 CSS Rules sorted from LOW to HIGH */
+
+/* Rule 1: Element selector */
+/* Specificity: (0, 0, 1) */
+p {
+  color: blue;
+  font-size: 32px;
+  font-weight: normal;
+}
+
+/* Rule 2: Class selector - .text */
+/* Specificity: (0, 1, 0) */
+.text {
+  color: green;
+}
+
+/* Rule 3: Class selector - .highlight */
+/* Specificity: (0, 1, 0) */
+.highlight {
+  color: orange;
+}
+
+/* Rule 4: Element + Class */
+/* Specificity: (0, 1, 1) */
+p.text {
+  color: purple;
+}
+
+/* Rule 5: Element + Class (different class) */
+/* Specificity: (0, 1, 1) */
+p.highlight {
+  color: brown;
+}
+
+/* Rule 6: Two classes combined */
+/* Specificity: (0, 2, 0) */
+.text.highlight {
+  color: pink;
+}
+
+/* Rule 7: Element + Two classes */
+/* Specificity: (0, 2, 1) */
+p.text.highlight {
+  color: gray;
+}
+
+/* Rule 8: ID selector */
+/* Specificity: (1, 0, 0) */
+#demo {
+  color: red;
+}
+
+/* Rule 9: ID + Class */
+/* Specificity: (1, 1, 0) */
+#demo.text {
+  color: navy;
+}
+
+/* Rule 10: ID + Two classes (HIGHEST SPECIFICITY) */
+/* Specificity: (1, 2, 0) */
+#demo.text.highlight {
+  color: yellow;
+  background-color: #333;
+  padding: 20px;
+  border-radius: 4px;
+}
