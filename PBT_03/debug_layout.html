@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Debug Layout</title>
+    <link rel="stylesheet" href="debug_layout.css">
+</head>
+<body>
+    <h1>Debug Layout — minh hoạ 3 trường hợp</h1>
+
+    <section class="example broken">
+        <h2>Broken (mặc định content-box)</h2>
+        <div class="container">
+            <div class="sidebar">Sidebar (300px + 20px padding + 1px border)</div>
+            <div class="content">Content (660px + 30px padding + 1px border)</div>
+        </div>
+    </section>
+
+    <section class="example border-box">
+        <h2>Fix A — box-sizing: border-box</h2>
+        <div class="container">
+            <div class="sidebar">Sidebar (box-sizing: border-box)</div>
+            <div class="content">Content (box-sizing: border-box)</div>
+        </div>
+    </section>
+
+    <section class="example adjusted">
+        <h2>Fix B — điều chỉnh width (content-box)</h2>
+        <div class="container">
+            <div class="sidebar">Sidebar (300px)</div>
+            <div class="content">Content (556px)</div>
+        </div>
+    </section>
+
+</body>
+</html>

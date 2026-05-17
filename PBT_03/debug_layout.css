@@ -1,0 +1,58 @@
+body { font-family: Arial, Helvetica, sans-serif; padding: 20px; background: #f5f5f5; }
+h1 { margin-bottom: 18px }
+.example { background: #fff; padding: 12px; margin-bottom: 18px; border: 1px solid #e0e0e0 }
+.example h2 { margin-top: 0; font-size: 16px }
+.container { width: 960px; margin: 12px auto; background: #fafafa; padding: 8px; box-shadow: inset 0 0 0 1px #f0f0f0 }
+.container::after { content: ""; display: block; clear: both }
+
+/* Broken (original) */
+.broken .sidebar {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    float: left;
+    background: #e6f7ff;
+}
+.broken .content {
+    width: 660px;
+    padding: 30px;
+    border: 1px solid #ccc;
+    float: left;
+    background: #fff3e6;
+}
+
+/* Fix A: border-box */
+.border-box * { box-sizing: border-box }
+.border-box .sidebar {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    float: left;
+    background: #e6f7ff;
+}
+.border-box .content {
+    width: 660px;
+    padding: 30px;
+    border: 1px solid #ccc;
+    float: left;
+    background: #fff3e6;
+}
+
+/* Fix B: adjusted widths (content-box) */
+.adjusted .sidebar {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    float: left;
+    background: #e6f7ff;
+}
+.adjusted .content {
+    /* content-box width adjusted from 660 -> 556 to account for padding/border */
+    width: 556px;
+    padding: 30px;
+    border: 1px solid #ccc;
+    float: left;
+    background: #fff3e6;
+}
+
+.sidebar, .content { min-height: 120px }

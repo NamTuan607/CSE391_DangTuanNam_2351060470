@@ -1,3 +1,4 @@
+
 Phần A - Kiểm tra đọc hiểu 
 
 câu A1
@@ -222,3 +223,86 @@ hoặc
 p { color: blue; }
 ```
 **Kết quả vẫn luôn là YELLOW**, vì specificity của `#demo.text.highlight` luôn cao hơn `p`.
+
+## PHẦN C — DEBUG & SUY LUẬN (20 điểm)
+
+### Câu C1 (10đ) — Debug CSS Layout
+
+Cho CSS ban đầu (content-box):
+
+.container {
+   width: 960px;
+   margin: 0 auto;
+}
+.sidebar {
+   width: 300px;
+   padding: 20px;
+   border: 1px solid #ccc;
+   float: left;
+}
+.content {
+   width: 660px;
+   padding: 30px;
+   border: 1px solid #ccc;
+   float: left;
+}
+
+Tính chiều rộng thực tế (content-box):
+- Sidebar: 300px (width) + 2*20px (padding) + 2*1px (border) = 300 + 40 + 2 = 342px
+- Content: 660px + 2*30px + 2*1px = 660 + 60 + 2 = 722px
+- Tổng = 342 + 722 = 1064px > 960px → layout bị vỡ (content bị đẩy xuống dòng)
+
+Giải thích: vì box model mặc định là `content-box`, `width` chỉ là phần content, padding và border được thêm bên ngoài. Hai cột cộng lại vượt quá chiều rộng container 960px.
+
+Hai cách sửa (đủ khác nhau):
+- Cách 1 (dùng `border-box`): cho `.sidebar` và `.content` hoặc toàn cục `box-sizing: border-box;` — khi đó `width` bao gồm padding và border, giữ nguyên `width:300` và `width:660` sẽ cho tổng 960px và khít.
+- Cách 2 (không dùng `border-box`): điều chỉnh `width` để bù padding + border. Với padding/border hiện tại tổng phần bổ sung là 42px (sidebar) + 62px (content) = 104px. Vậy tổng content-box widths phải bằng 960 - 104 = 856px. Giữ sidebar 300 → content = 856 - 300 = 556px (content-box). Khi đó:
+  - Sidebar ngoài cùng = 300 + 40 + 2 = 342px
+  - Content ngoài cùng = 556 + 60 + 2 = 618px
+  - Tổng = 342 + 618 = 960px
+
+Tôi đã tạo file minh họa: [PBT_03/debug_layout.html](PBT_03/debug_layout.html) và [PBT_03/debug_layout.css](PBT_03/debug_layout.css). Mở `debug_layout.html` trong trình duyệt để xem 3 khối: Broken (gốc), Fix A (box-sizing: border-box), Fix B (width đã điều chỉnh).
+
+---
+
+### Câu C2 (10đ) — Cascade Puzzle
+
+CSS cho trước:
+
+body { font-size: 16px; color: #333; }
+.container { font-size: 14px; }
+.card { color: blue; }
+.card .title { font-size: 20px; }
+.card p { color: inherit; }
+#featured .title { color: red; }
+.highlight { color: green !important; }
+
+HTML (vị trí các phần cần trả lời):
+
+1) "Sản phẩm A" (h2, class `title highlight`, inside `#featured`):
+  - font-size = 20px (selector `.card .title` áp dụng trực tiếp với specificity phù hợp)
+  - color = green (selector `.highlight` có `!important`, ghi đè mọi quy tắc màu khác)
+
+Giải thích ngắn: `font-size` được set bởi `.card .title` (không có !important), còn `color` có một quy tắc `.highlight { color: green !important; }` có độ ưu tiên cao nhất do `!important`, nên thắng cả `#featured .title { color: red }`.
+
+2) "Mô tả sản phẩm" (p trong card featured):
+  - color = blue
+
+Giải thích: `.card { color: blue }` gán màu cho phần tử `.card` và được kế thừa xuống con. `.card p { color: inherit; }` khiến `p` lấy màu từ cha (`.card`) => blue. Không có `!important` hay selector nào khác áp dụng cho `p` này.
+
+3) "Sản phẩm B" (h2 trong .card thứ hai, class `title`):
+  - font-size = 20px (từ `.card .title`)
+  - color = blue (kế thừa từ `.card` vì không có override cho màu của title)
+
+Giải thích: không có `.highlight` hay id áp dụng, nên màu kế thừa từ `.card` → blue.
+
+4) "Mô tả sản phẩm B" (p.highlight inside second card):
+  - color = green
+
+Giải thích: `.card p { color: inherit; }` sẽ khiến p kế thừa màu mặc định từ `.card` (blue), nhưng p có class `highlight` và `.highlight { color: green !important; }` chứa `!important` nên ghi đè mọi quy tắc khác — kết quả là green.
+
+Tôi đã thêm file kiểm chứng: [PBT_03/cascade_test.html](PBT_03/cascade_test.html) và [PBT_03/cascade_test.css](PBT_03/cascade_test.css). Mở `cascade_test.html` để kiểm tra trực quan.
+
+Lưu ý về screenshot: trong môi trường này tôi không thể chụp ảnh màn hình của trình duyệt. Vui lòng mở các file HTML trên máy của bạn và chụp screenshot. Hai file để mở là:
+- [PBT_03/debug_layout.html](PBT_03/debug_layout.html)
+- [PBT_03/cascade_test.html](PBT_03/cascade_test.html)
