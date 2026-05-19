@@ -1,0 +1,187 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --line: #d9e2ef;
+  --text: #152238;
+  --brand: #1862f5;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  padding: 20px;
+}
+
+.page-header,
+.loading-wrap,
+.products-section,
+.extra-content,
+.info-block {
+  max-width: 1100px;
+  margin: 0 auto 20px;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: #4d5e78;
+}
+
+.loading-wrap {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 4) Loading spinner */
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 5px solid #c8d8f4;
+  border-top: 5px solid var(--brand);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.products-section h2,
+.extra-content h2 {
+  margin-bottom: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+/* 1) Card hover effect */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 14px 30px rgba(12, 47, 107, 0.18);
+}
+
+/* 3) Image zoom */
+.image-wrap {
+  overflow: hidden;
+}
+
+.image-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .image-wrap img {
+  transform: scale(1.1);
+}
+
+.card-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-body h3 {
+  font-size: 1.1rem;
+}
+
+.card-body p {
+  color: #596a84;
+}
+
+/* 2) Button hover */
+.buy-btn {
+  margin-top: auto;
+  border: 1px solid var(--brand);
+  background: var(--brand);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.buy-btn:hover {
+  background-color: #ffffff;
+  color: var(--brand);
+  transform: scale(1.05);
+}
+
+.extra-content,
+.info-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.info-block h3 {
+  margin-bottom: 6px;
+}
+
+/* 5) Fade-in khi scroll (CSS only) */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.8s ease forwards;
+  animation-timeline: view();
+  animation-range: entry 0% cover 35%;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 14px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .loading-wrap {
+    padding: 14px;
+  }
+}

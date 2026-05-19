@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B2 - CSS Transitions & Animations</title>
+  <link rel="stylesheet" href="animations.css">
+</head>
+<body>
+  <header class="page-header fade-in">
+    <h1>Product Showcase</h1>
+    <p>Demo 5 hiệu ứng bắt buộc: card hover, button hover, image zoom, spinner, fade-in.</p>
+  </header>
+
+  <section class="loading-wrap fade-in">
+    <h2>Loading Spinner</h2>
+    <div class="spinner" aria-label="Loading"></div>
+  </section>
+
+  <main class="products-section fade-in">
+    <h2>Products</h2>
+    <div class="grid">
+      <article class="card fade-in">
+        <div class="image-wrap">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 340'%3E%3Crect width='500' height='340' fill='%231464f4'/%3E%3Ctext x='50%25' y='52%25' fill='white' text-anchor='middle' font-size='34' font-family='Segoe UI'%3EProduct 1%3C/text%3E%3C/svg%3E" alt="Product 1">
+        </div>
+        <div class="card-body">
+          <h3>Wireless Headphones</h3>
+          <p>Âm thanh sống động, pin 24h.</p>
+          <button class="buy-btn">Mua ngay</button>
+        </div>
+      </article>
+
+      <article class="card fade-in">
+        <div class="image-wrap">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 340'%3E%3Crect width='500' height='340' fill='%230ea5a0'/%3E%3Ctext x='50%25' y='52%25' fill='white' text-anchor='middle' font-size='34' font-family='Segoe UI'%3EProduct 2%3C/text%3E%3C/svg%3E" alt="Product 2">
+        </div>
+        <div class="card-body">
+          <h3>Smart Watch</h3>
+          <p>Theo dõi sức khỏe thời gian thực.</p>
+          <button class="buy-btn">Mua ngay</button>
+        </div>
+      </article>
+
+      <article class="card fade-in">
+        <div class="image-wrap">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 340'%3E%3Crect width='500' height='340' fill='%23f97316'/%3E%3Ctext x='50%25' y='52%25' fill='white' text-anchor='middle' font-size='34' font-family='Segoe UI'%3EProduct 3%3C/text%3E%3C/svg%3E" alt="Product 3">
+        </div>
+        <div class="card-body">
+          <h3>Bluetooth Speaker</h3>
+          <p>Âm bass mạnh, thiết kế nhỏ gọn.</p>
+          <button class="buy-btn">Mua ngay</button>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <section class="extra-content fade-in">
+    <h2>Scroll Section</h2>
+    <p>Kéo xuống để thấy các block fade-in theo viewport (CSS only).</p>
+  </section>
+
+  <section class="info-block fade-in">
+    <h3>Ưu đãi tuần này</h3>
+    <p>Giảm đến 40% cho phụ kiện công nghệ.</p>
+  </section>
+
+  <section class="info-block fade-in">
+    <h3>Miễn phí vận chuyển</h3>
+    <p>Áp dụng cho đơn hàng từ 500.000đ.</p>
+  </section>
+</body>
+</html>

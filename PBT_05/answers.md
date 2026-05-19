@@ -186,3 +186,42 @@ Bước cần làm để SCSS -> CSS:
 sass input.scss output.css
 ```
 - Sau đó link file `.css` đã biên dịch vào HTML.
+
+---
+
+## Bài B3 (20đ) — SCSS Refactor
+
+### Cấu trúc file partial
+
+```text
+PBT_05/
+├── scss/
+│   ├── _variables.scss
+│   ├── _mixins.scss
+│   ├── _components.scss
+│   └── style.scss
+├── style.css
+└── style.css.map
+```
+
+### Đáp ứng yêu cầu
+
+- Variables: đã khai báo và dùng nhất quán (>= 8 biến), gồm:
+	- `$primary-color`, `$secondary-color`, `$font-primary`
+	- `$breakpoint-tablet`, `$breakpoint-desktop`
+	- `$spacing-sm`, `$spacing-md`, `$spacing-lg`
+	- thêm các biến hỗ trợ như `$bg-color`, `$line-color`, `$radius-md`.
+- Nesting: có nhiều block nested, ví dụ trong `.site-header`, `.card`, `.sidebar` với parent selector `&:hover`, `&.featured`.
+- Mixins: đã tạo và sử dụng 3 mixins:
+	- `@mixin respond-to($breakpoint)`
+	- `@mixin flex-center`
+	- `@mixin card-shadow($hover: false)`
+- Partial & Import: `style.scss` import 3 partial theo đúng yêu cầu.
+
+### Lệnh compile SCSS -> CSS đã dùng
+
+```bash
+npx sass scss/style.scss style.css
+```
+
+Kết quả: compile thành công, tạo `style.css` và `style.css.map` trong thư mục `PBT_05`.

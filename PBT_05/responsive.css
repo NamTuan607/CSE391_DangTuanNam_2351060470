@@ -1,0 +1,291 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f3f6fb;
+  --surface: #ffffff;
+  --line: #dbe3ef;
+  --text: #17223b;
+  --muted: #5b6b84;
+  --brand: #1464f4;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+/* Mobile first: default = mobile */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 60px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.hamburger {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.main-nav {
+  display: none;
+}
+
+.page-layout {
+  max-width: 1400px;
+  margin: 14px auto;
+  padding: 0 14px;
+}
+
+/* Sidebar hidden on mobile */
+.sidebar,
+.ads-bar {
+  display: none;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.product-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 320px;
+}
+
+.product-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.product-card h3 {
+  font-size: 1rem;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #d13a3a;
+}
+
+.product-card button {
+  margin-top: auto;
+  border: none;
+  background: var(--brand);
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.site-footer {
+  margin-top: 18px;
+  padding: 18px 14px;
+  text-align: center;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Tablet: 768 - 1023 */
+@media (min-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  .header-inner {
+    min-height: 66px;
+    padding: 0 18px;
+  }
+
+  .logo {
+    font-size: 1.35rem;
+  }
+
+  .page-layout {
+    margin: 18px auto;
+    padding: 0 18px;
+  }
+
+  .sidebar {
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  .filter-dropdown {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .filter-dropdown summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 14px;
+    font-weight: 700;
+  }
+
+  .filter-dropdown summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .filter-content {
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .filter-content label {
+    white-space: nowrap;
+  }
+
+  .sidebar-panel {
+    display: none;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .product-card h3 {
+    font-size: 1.05rem;
+  }
+}
+
+/* Desktop: >= 1024 */
+@media (min-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+
+  .header-inner {
+    padding: 0 24px;
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  .main-nav {
+    display: flex;
+    gap: 22px;
+    margin-left: auto;
+  }
+
+  .main-nav a {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .main-nav a:hover {
+    color: var(--brand);
+  }
+
+  .page-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    gap: 14px;
+    padding: 0 24px;
+    align-items: start;
+  }
+
+  .sidebar,
+  .ads-bar {
+    display: block;
+  }
+
+  .filter-dropdown {
+    display: none;
+  }
+
+  .sidebar-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .sidebar-panel h3 {
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+
+  .ads-bar .ad-box {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .ads-bar img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .product-card {
+    min-height: 340px;
+  }
+
+  .product-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .price {
+    font-size: 1.05rem;
+  }
+}
