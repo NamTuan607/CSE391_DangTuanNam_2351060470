@@ -1,0 +1,55 @@
+/* Flexbox Navigation & Cards */
+
+* {box-sizing: border-box; margin: 0; padding: 0}
+body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color:#333; background:#f7f7f7}
+
+/* NAVBAR */
+.navbar {background: white; border-bottom:1px solid #e6e6e6}
+.nav-container {display:flex; align-items:center; gap:20px; max-width:1200px; margin:0 auto; padding:12px 20px}
+
+.logo {font-weight:700; font-size:20px; color:#2c3e50}
+
+.menu {display:flex; gap:24px; justify-content:center; flex:1}
+.menu a {text-decoration:none; color:#555; padding:6px 2px; transition: color .2s, text-decoration-color .2s}
+.menu a:hover {color:#3498db; text-decoration: underline}
+
+.auth {display:flex; gap:10px}
+.btn-outline, .btn-primary {padding:8px 12px; border-radius:6px; cursor:pointer; border:1px solid transparent}
+.btn-outline {background:transparent; color:#2c3e50; border-color:#ccc}
+.btn-primary {background:#3498db; color:white; border-color:#3498db}
+.btn-outline:hover {background:#f0f0f0}
+.btn-primary:hover {background:#2980b9}
+
+/* Ensure perfect vertical centering already via align-items:center */
+
+/* PAGE */
+.page {max-width:1200px; margin:24px auto; padding:0 20px}
+
+.cards-section h1 {margin-bottom:16px}
+
+/* CARDS CONTAINER USING FLEXBOX */
+.cards-container {display:flex; flex-wrap:wrap; gap:20px}
+
+.card {display:flex; flex-direction:column; background:white; border-radius:8px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.08); transition: transform .2s ease, box-shadow .2s ease; flex:0 0 calc(25% - 20px);}
+
+.card:hover {transform: translateY(-5px); box-shadow:0 8px 24px rgba(0,0,0,0.12)}
+
+.card-image {height:140px; background:#ddd; display:flex; align-items:center; justify-content:center; color:#777}
+
+.card-body {display:flex; flex-direction:column; padding:14px; min-height:160px}
+.card-title {font-size:16px; margin-bottom:6px}
+.card-price {font-weight:700; color:#e74c3c}
+
+.buy {margin-top:auto; padding:10px 12px; background:#2ecc71; color:white; border:none; border-radius:6px; cursor:pointer}
+.buy:hover {background:#27ae60}
+
+/* Responsive: 2 columns on smaller screens */
+@media (max-width:900px){
+  .card {flex:0 0 calc(50% - 20px)}
+}
+
+@media (max-width:480px){
+  .menu {display:none}
+  .card {flex:0 0 100%}
+  .nav-container {padding:10px}
+}

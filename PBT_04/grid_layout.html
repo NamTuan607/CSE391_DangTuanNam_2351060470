@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Grid Layout - E-Commerce</title>
+  <link rel="stylesheet" href="grid.css">
+</head>
+<body>
+  <div class="site-grid">
+    <header class="site-header"> 
+      <div class="header-inner">
+        <div class="brand">MyShop</div>
+        <div class="search"> <input placeholder="Tìm sản phẩm..."> </div>
+        <div class="header-actions"> Cart • Account </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-banner"> 
+          <h1>Spring Sale — Up to 50% Off</h1>
+          <p>Limited time offers on featured collections</p>
+        </div>
+
+        <div class="featured-card">
+          <div class="feat-img">Featured</div>
+          <div class="feat-body">
+            <h3>Featured Product</h3>
+            <p class="price">$199</p>
+            <button class="buy">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <h3>Filters</h3>
+      <label><input type="checkbox"> Under $50</label>
+      <label><input type="checkbox"> $50 - $150</label>
+      <label><input type="checkbox"> $150 - $300</label>
+      <label><input type="checkbox"> 4 stars & up</label>
+      <label><input type="checkbox"> Free shipping</label>
+    </aside>
+
+    <main class="main">
+      <div class="products-grid">
+        <!-- At least 6 product cards -->
+        <article class="product">
+          <div class="p-img">Img</div>
+          <h4>Product 1</h4>
+          <p class="p-price">$29</p>
+        </article>
+        <article class="product">
+          <div class="p-img">Img</div>
+          <h4>Product 2</h4>
+          <p class="p-price">$39</p>
+        </article>
+        <article class="product">
+          <div class="p-img">Img</div>
+          <h4>Product 3</h4>
+          <p class="p-price">$49</p>
+        </article>
+        <article class="product">
+          <div class="p-img">Img</div>
+          <h4>Product 4</h4>
+          <p class="p-price">$59</p>
+        </article>
+        <article class="product">
+          <div class="p-img">Img</div>
+          <h4>Product 5</h4>
+          <p class="p-price">$69</p>
+        </article>
+        <article class="product">
+          <div class="p-img">Img</div>
+          <h4>Product 6</h4>
+          <p class="p-price">$79</p>
+        </article>
+      </div>
+    </main>
+
+    <aside class="ads">
+      <div class="ad-box">Advertisement</div>
+    </aside>
+
+    <footer class="site-footer">
+      <div class="footer-inner">© 2026 MyShop — All rights reserved</div>
+    </footer>
+  </div>
+</body>
+</html>
