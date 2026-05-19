@@ -225,3 +225,175 @@ npx sass scss/style.scss style.css
 ```
 
 Kết quả: compile thành công, tạo `style.css` và `style.css.map` trong thư mục `PBT_05`.
+
+---
+
+## PHẦN C — PHÂN TÍCH (20 điểm)
+
+## Câu C1 (10đ) — Phân tích trang web thực (YouTube)
+
+Trang được chọn: **YouTube** (`https://www.youtube.com`).
+
+Screenshot 3 kích thước đã lưu:
+- [PBT_05/screenshots/c1_youtube_375.png](screenshots/c1_youtube_375.png)
+- [PBT_05/screenshots/c1_youtube_768.png](screenshots/c1_youtube_768.png)
+- [PBT_05/screenshots/c1_youtube_1440.png](screenshots/c1_youtube_1440.png)
+
+Phân tích:
+
+1) Navigation thay đổi thế nào?
+- Mobile (375px): top bar rất gọn, có nút menu/guide icon, phần điều hướng chính chuyển xuống bottom navigation kiểu app (Home, Shorts, Subscriptions, You).
+- Tablet (768px): top bar vẫn giữ icon-based compact navigation, không hiển thị đầy đủ sidebar rộng như desktop.
+- Desktop (1440px): header đầy đủ hơn, vùng trái có guide button + brand; điều hướng/phần chức năng mở rộng hơn và không dùng bottom nav.
+
+2) Lưới content thay đổi mấy cột?
+- Mobile: layout feed ưu tiên 1 cột lớn.
+- Tablet: thường tăng lên 2 cột (tùy vùng nội dung).
+- Desktop: nhiều cột hơn (thường 4+ cột với khung rộng).
+
+3) Elements nào bị ẩn trên mobile?
+- Nhiều thành phần phụ của desktop như sidebar rộng, một số nhãn chữ dài và nhóm action phụ.
+- Những vùng ưu tiên thấp (gợi ý phụ, panel mở rộng) được rút gọn hoặc ẩn.
+
+4) Font size có thay đổi không?
+- Có. Mobile dùng chữ nhỏ/gọn hơn để tối ưu mật độ thông tin.
+- Desktop tăng nhẹ cỡ chữ ở một số heading/label để dễ đọc trên màn hình lớn.
+
+5) Media query evidence (lấy từ stylesheet runtime)
+- Môi trường tự động không mở được panel DevTools Styles để chụp trực tiếp panel, nhưng đã trích được các điều kiện `@media` mà trang dùng, ví dụ:
+	- `@media (min-width: 792px)`
+	- `@media only screen and (max-width: 600px)`
+	- `@media (min-width: 1024px)`
+	- `@media (min-width: 600px)`
+- Khi nộp bài, bạn có thể chụp thêm 2 ảnh trong DevTools Styles theo đúng yêu cầu chấm điểm.
+
+---
+
+## Câu C2 (10đ) — Thiết kế Responsive Strategy (Trang Đặt bàn nhà hàng)
+
+### Wireframe 3 kích thước
+
+Mobile (<768px)
+
+```text
+┌──────────────────────────────┐
+│ Header: Logo + Call Button   │
+├──────────────────────────────┤
+│ Hero Image                   │
+├──────────────────────────────┤
+│ Form Đặt Bàn                 │
+│ (ngày, giờ, số người, note)  │
+├──────────────────────────────┤
+│ Grid ảnh món (1 cột)         │
+├──────────────────────────────┤
+│ Google Map                   │
+├──────────────────────────────┤
+│ Footer                        │
+└──────────────────────────────┘
+```
+
+Mobile ẩn gì?
+- Không cần sidebar riêng.
+- Rút gọn menu phụ; ưu tiên CTA gọi điện + form đặt bàn.
+- Form đặt bàn đặt ngay sau hero để tăng conversion.
+
+Tablet (768px - 1023px)
+
+```text
+┌──────────────────────────────────────┐
+│ Header: Logo + Phone + Nav compact   │
+├──────────────────────────────────────┤
+│ Hero Image                            │
+├──────────────────────────────────────┤
+│ Form Đặt Bàn                          │
+├──────────────────────────────────────┤
+│ Grid ảnh món (2-3 cột)               │
+├──────────────────────────────────────┤
+│ Google Map (full width dưới grid)     │
+├──────────────────────────────────────┤
+│ Footer                                │
+└──────────────────────────────────────┘
+```
+
+Tablet:
+- Grid ảnh nên để 2 cột (hoặc 3 cột nếu card nhỏ).
+- Bản đồ đặt dưới grid để tránh layout quá dày theo chiều ngang.
+
+Desktop (>=1024px)
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│ Header: Logo | Nav | Phone CTA                           │
+├──────────────────────────────────────────────────────────┤
+│ Hero full width                                           │
+├──────────────────────────────┬───────────────────────────┤
+│ Form Đặt Bàn                 │ Google Map                │
+├──────────────────────────────┴───────────────────────────┤
+│ Grid ảnh món (3 cột)                                      │
+├──────────────────────────────────────────────────────────┤
+│ Footer                                                     │
+└──────────────────────────────────────────────────────────┘
+```
+
+Desktop:
+- Layout chính 2 cột cho khu vực form + map.
+- Không cần sidebar riêng; thay vào đó ưu tiên nội dung và CTA rõ ràng.
+
+### CSS skeleton (Grid + Media Queries Mobile-First)
+
+```css
+/* Mobile-first */
+.page {
+	display: grid;
+	grid-template-areas:
+		"header"
+		"hero"
+		"booking"
+		"gallery"
+		"map"
+		"footer";
+	gap: 16px;
+}
+
+.header  { grid-area: header; }
+.hero    { grid-area: hero; }
+.booking { grid-area: booking; }
+.gallery { grid-area: gallery; }
+.map     { grid-area: map; }
+.footer  { grid-area: footer; }
+
+.gallery-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 12px;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+	.page {
+		gap: 20px;
+	}
+
+	.gallery-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+	.page {
+		grid-template-areas:
+			"header header"
+			"hero hero"
+			"booking map"
+			"gallery gallery"
+			"footer footer";
+		grid-template-columns: 1fr 1fr;
+		gap: 24px;
+	}
+
+	.gallery-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+```
