@@ -162,3 +162,79 @@
 - **Positioning**: Static (mặc định), Relative (điều chỉnh nhỏ), Absolute (xóa khỏi flow, tham chiếu nearest positioned ancestor), Fixed (tham chiếu viewport), Sticky (kết hợp cả hai)
 - **Flexbox**: Tốt cho layout 1 chiều (hàng hoặc cột), dễ sử dụng với items động
 - **Grid**: Tốt cho layout 2 chiều (hàng + cột), kiểm soát chặt chẽ kích thước ô
+
+---
+
+## PHẦN C — SUY LUẬN (20 điểm)
+
+### Câu C1 (10đ) — Flexbox vs Grid: Khi nào dùng gì?
+
+1) Navigation bar ngang (logo + menu + buttons)
+- Chọn: **Flexbox**. Lý do: thanh nav là layout 1 chiều (ngang). Flex giúp căn giữa dọc (`align-items: center`) và phân phối không gian (`justify-content`) dễ dàng, đồng thời phần tử trái/giữa/phải có thể đặt bằng `flex`/`margin-left: auto`.
+
+2) Lưới ảnh Instagram (3 cột đều nhau, số ảnh không biết trước)
+- Chọn: **CSS Grid** (hoặc Grid kết hợp `auto-fill/auto-fit`). Lý do: Grid cung cấp cách xác định chính xác số cột bằng `repeat(3, 1fr)` và xử lý hàng/ô đều nhau dễ dàng; nếu cần responsive, dùng `repeat(auto-fill, minmax(...))`.
+
+3) Layout blog: main content + sidebar
+- Chọn: **Grid** cho layout chính (2 cột) hoặc **kết hợp Grid + Flexbox**. Lý do: Grid cho phép xác định rõ tỉ lệ 2 cột (`200px 1fr`), còn Flexbox tốt để căn chỉnh nội dung bên trong từng cột.
+
+4) Footer với 4 cột thông tin
+- Chọn: **Grid**. Lý do: footer là layout hàng 1 với 4 cột cố định/equal — Grid dễ tạo 4 cột đều nhau và xử lý wrap/responsive.
+
+5) Card sản phẩm (ảnh trên, text giữa, nút dưới — nút luôn dính đáy)
+- Chọn: **Flexbox (column)**. Lý do: bên trong card là 1 chiều theo hàng dọc; dùng `display:flex; flex-direction:column;` và `margin-top:auto` cho nút để đẩy nút xuống đáy card.
+
+---
+
+### Câu C2 (10đ) — Debug Flexbox
+
+Lỗi 1: Cards không đều chiều cao — nút "Mua" bị nhảy lên/xuống
+- Nguyên nhân: `.card` chưa là flex container theo chiều dọc, nên nội dung có chiều cao khác nhau; nút không được đẩy xuống đáy. Ngoài ra `.card-container` cần `align-items: stretch` để đồng bộ chiều cao các card.
+- Sửa (thêm/đổi CSS):
+```css
+.card-container { display: flex; flex-wrap: wrap; align-items: stretch; }
+.card {
+  width: 30%;
+  margin: 1.5%;
+  display: flex;           /* make card a flex column */
+  flex-direction: column;  /* stack content vertically */
+}
+.card img { width: 100%; display:block }
+.card .btn { margin-top: auto; }
+```
+- Hướng kiểm tra: trước khi sửa, cao card khác nhau; sau khi sửa, tất cả card cùng chiều cao trong hàng, nút luôn ở đáy.
+
+Lỗi 2: Muốn items nằm giữa cả ngang lẫn dọc trong container 100vh, nhưng item vẫn dính góc trái trên
+- Nguyên nhân: `.hero` chỉ `display:flex` nhưng thiếu `justify-content` và `align-items`. Mặc định flex items nằm ở đầu trục (flex-start).
+- Sửa:
+```css
+.hero {
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;     /* center vertically */
+}
+.hero-content { text-align: center }
+```
+- Hướng kiểm tra: trước khi sửa, content dính góc; sau khi sửa content ở giữa 100vh.
+
+Lỗi 3: Sidebar bị co lại khi content quá dài
+- Nguyên nhân: flex items mặc định có thể shrink; `.sidebar` chỉ có `width:250px` nhưng có thể bị co (shrink) khi container nhỏ hoặc khi nội dung ép; cần đảm bảo không cho shrink hoặc đặt `flex` cố định.
+- Sửa:
+```css
+.layout { display: flex; align-items: stretch; }
+.sidebar { flex: 0 0 250px; /* không shrink, không grow, width = 250px */ }
+.content { flex: 1; min-width: 0; /* allow content to shrink properly */ }
+```
+- Ghi chú: `min-width:0` trên `.content` quan trọng để cho phép phần nội dung chính bị bó nhỏ (và xuất hiện scrollbar) thay vì ép sidebar.
+
+Ảnh chụp (yêu cầu): tôi không thể trực tiếp chụp ảnh màn hình trong môi trường này. Để tạo screenshot trước/sau, bạn có thể:
+- Mở trang demo trong trình duyệt (ví dụ mở file HTML tương ứng), chụp màn hình trước khi áp dụng CSS sửa lỗi.
+- Áp dụng CSS sửa lỗi (hoặc mở file đã sửa), reload trang và chụp màn hình sau.
+- Trên Windows: `PrtSc` hoặc `Win+Shift+S`; trên macOS: `Cmd+Shift+4`.
+
+---
+
+Hoàn tất PHẦN C. Nếu bạn muốn, mình sẽ:
+- commit & push phần này vào repo, hoặc
+- tạo các file demo nhỏ để bạn mở kiểm thử và mình sẽ chụp screenshot (nếu bạn cho phép chạy local preview). 
