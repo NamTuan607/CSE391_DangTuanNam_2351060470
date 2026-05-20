@@ -413,3 +413,211 @@ $primary: #E63946;
 - **Bootstrap tốt cho:**快速prototyping, landing pages, admin dashboards, MVP
 - **CSS thuần tốt cho:** tối ưu hiệu năng, design độc quyền, dự án nhỏ
 - **Ngon lành nhất:** dùng CSS thuần cho base, thêm Bootstrap utilities khi cần
+
+---
+
+# TRACK B — TAILWINDCSS
+
+## PHẦN A — ĐỌC HIỂU (20 điểm)
+
+### Câu A1 (10đ) — Utility Classes
+
+Giải thích ý nghĩa từng class Tailwind trong đoạn HTML:
+
+```html
+<div class="flex items-center justify-between p-4 bg-white shadow-md rounded-lg 
+            hover:shadow-xl transition-shadow duration-300">
+    <img class="w-16 h-16 rounded-full object-cover" src="avatar.jpg" alt="User">
+    <div class="ml-4 flex-1">
+        <h3 class="text-lg font-semibold text-gray-800 truncate">Nguyễn Văn A</h3>
+        <p class="text-sm text-gray-500">Frontend Developer</p>
+    </div>
+    <button class="px-4 py-2 bg-blue-500 text-white rounded-md 
+                   hover:bg-blue-600 focus:ring-2 focus:ring-blue-300">
+        Follow
+    </button>
+</div>
+```
+
+**Danh sách Utility Classes:**
+
+| Class | CSS tương đương | Ý nghĩa |
+|---|---|---|
+| `flex` | `display: flex;` | Sử dụng flexbox layout |
+| `items-center` | `align-items: center;` | Căn giữa các item theo trục dọc |
+| `justify-between` | `justify-content: space-between;` | Phân bố item: đầu, cuối, cách đều |
+| `p-4` | `padding: 1rem;` | Padding 4 phía = 16px |
+| `bg-white` | `background-color: white;` | Nền màu trắng |
+| `shadow-md` | `box-shadow: 0 4px 6px rgba(0,0,0,0.1);` | Bóng đổ vừa phải |
+| `hover:shadow-xl` | `&:hover { box-shadow: 0 20px 25px rgba(0,0,0,0.15); }` | Bóng đổ lớn khi hover |
+| `rounded-lg` | `border-radius: 0.5rem;` | Bo góc 8px |
+| `transition-shadow` | `transition-property: box-shadow;` | Hiệu ứng chuyển động cho shadow |
+| `duration-300` | `transition-duration: 300ms;` | Thời gian chuyển động 300ms |
+| `w-16` | `width: 4rem;` | Chiều rộng 64px (16 × 4px) |
+| `h-16` | `height: 4rem;` | Chiều cao 64px |
+| `rounded-full` | `border-radius: 9999px;` | Bo tròn 100% (tạo hình tròn) |
+| `object-cover` | `object-fit: cover;` | Hình ảnh lấp đầy container, có crop |
+| `ml-4` | `margin-left: 1rem;` | Margin trái 16px |
+| `flex-1` | `flex: 1 1 0%;` | Chiếm phần còn lại của flex container |
+| `text-lg` | `font-size: 1.125rem;` | Kích thước chữ lớn (18px) |
+| `font-semibold` | `font-weight: 600;` | Độ dày chữ vừa đậm |
+| `text-gray-800` | `color: rgb(31, 41, 55);` | Màu chữ xám tối |
+| `truncate` | `overflow: hidden; text-overflow: ellipsis; white-space: nowrap;` | Cắt text, thêm `...` nếu quá dài |
+| `text-sm` | `font-size: 0.875rem;` | Kích thước chữ nhỏ (14px) |
+| `text-gray-500` | `color: rgb(107, 114, 128);` | Màu chữ xám nhạt |
+| `px-4` | `padding-left: 1rem; padding-right: 1rem;` | Padding ngang 16px |
+| `py-2` | `padding-top: 0.5rem; padding-bottom: 0.5rem;` | Padding dọc 8px |
+| `bg-blue-500` | `background-color: rgb(59, 130, 246);` | Nền màu xanh |
+| `text-white` | `color: white;` | Màu chữ trắng |
+| `rounded-md` | `border-radius: 0.375rem;` | Bo góc 6px |
+| `hover:bg-blue-600` | `&:hover { background-color: rgb(37, 99, 235); }` | Màu xanh đậm hơn khi hover |
+| `focus:ring-2` | `&:focus { outline: none; box-shadow: 0 0 0 2px rgba(...); }` | Vòng focus khi được focus |
+| `focus:ring-blue-300` | Màu vòng focus là xanh nhạt | Màu ring/focus indicator |
+
+---
+
+### Câu A2 (10đ) — Responsive & States
+
+#### 1) Responsive Prefixes: `md:`, `lg:`, `xl:`
+
+**Breakpoints mặc định của Tailwind:**
+
+| Prefix | Breakpoint | Màn hình |
+|---|---|---|
+| (không) | `< 640px` | Mobile (mặc định) |
+| `sm:` | `≥ 640px` | Small (điện thoại lớn) |
+| `md:` | `≥ 768px` | Medium (tablet dọc) |
+| `lg:` | `≥ 1024px` | Large (tablet ngang/laptop nhỏ) |
+| `xl:` | `≥ 1280px` | Extra Large (laptop) |
+| `2xl:` | `≥ 1536px` | 2x Extra Large (desktop) |
+
+**Ví dụ: `md:grid-cols-2 lg:grid-cols-4`**
+
+```html
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div>Item 1</div>
+    <div>Item 2</div>
+    <div>Item 3</div>
+    <div>Item 4</div>
+</div>
+```
+
+**Giải thích:**
+- `grid-cols-1`: **Mặc định (< 768px)** → 1 cột, item xếp dọc (mobile)
+- `md:grid-cols-2`: **Từ 768px trở lên** → 2 cột (tablet)
+- `lg:grid-cols-4`: **Từ 1024px trở lên** → 4 cột (desktop)
+
+**Kết quả layout:**
+```
+Mobile (< 768px):        Tablet (768-1023px):     Desktop (≥ 1024px):
+┌──────────┐              ┌────────┬────────┐     ┌──┬──┬──┬──┐
+│ Item 1   │              │ Item 1 │ Item 2 │     │I1│I2│I3│I4│
+├──────────┤              ├────────┼────────┤     └──┴──┴──┴──┘
+│ Item 2   │              │ Item 3 │ Item 4 │
+├──────────┤              └────────┴────────┘
+│ Item 3   │
+├──────────┤
+│ Item 4   │
+└──────────┘
+```
+
+---
+
+#### 2) State Modifiers: `hover:`, `focus:`, `active:`, `group-hover:`
+
+**Ví dụ thực tế:**
+
+```html
+<!-- 1. hover: - Khi di chuột vào -->
+<button class="bg-blue-500 hover:bg-blue-600 hover:scale-105 transition">
+    Hover me
+</button>
+
+<!-- 2. focus: - Khi được focus (click/tab vào) -->
+<input class="border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-300">
+
+<!-- 3. active: - Khi click/giữ (button đang được press) -->
+<button class="bg-blue-500 active:bg-blue-700 active:scale-95">
+    Press me
+</button>
+
+<!-- 4. group-hover: - Khi hover group parent -->
+<div class="group border p-4 hover:bg-gray-100">
+    <h3 class="text-gray-800 group-hover:text-blue-500">Title</h3>
+    <p class="text-gray-500 group-hover:text-gray-700">Description</p>
+    <a href="#" class="text-blue-500 opacity-0 group-hover:opacity-100">
+        Learn more
+    </a>
+</div>
+```
+
+**Giải thích từng state:**
+
+| State | CSS tương đương | Khi nào được trigger | Ví dụ |
+|---|---|---|---|
+| `hover:` | `:hover` | Di chuột vào element | `hover:bg-blue-600` → đổi màu khi hover |
+| `focus:` | `:focus` | Click vào input hoặc Tab | `focus:ring-2 focus:ring-blue-300` → vòng xung quanh khi focus |
+| `active:` | `:active` | Đang click/giữ chuột | `active:scale-95` → nhỏ lại khi click |
+| `group-hover:` | `.group:hover .element` | Hover vào parent (`.group`) | `group-hover:text-blue-500` → đổi màu khi hover parent |
+| `disabled:` | `:disabled` | Button/input bị disabled | `disabled:opacity-50` → mờ lại khi disabled |
+| `focus-within:` | `:focus-within` | Input bên trong được focus | `focus-within:ring-2` → vòng xung quanh form khi input focus |
+
+---
+
+#### 3) Ẩn trên mobile, hiện dạng flex trên tablet trở lên
+
+**Yêu cầu: Tương đương `d-none d-md-flex` của Bootstrap**
+
+**Bootstrap:**
+```html
+<div class="d-none d-md-flex">
+    <!-- Ẩn trên mobile, hiện flex từ md trở lên -->
+</div>
+```
+
+**Tailwind:**
+```html
+<div class="hidden md:flex">
+    <!-- Ẩn trên mobile, hiện flex từ md (768px) trở lên -->
+</div>
+```
+
+**Giải thích:**
+- `hidden` → `display: none` (ẩn trên mọi breakpoint mặc định, tức là mobile)
+- `md:flex` → từ `768px` trở lên: `display: flex` (hiện dạng flex)
+
+**Ví dụ sử dụng:**
+
+```html
+<!-- Desktop menu ẩn trên mobile -->
+<nav class="hidden md:flex gap-4">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+</nav>
+
+<!-- Mobile hamburger menu ẩn trên tablet+ -->
+<button class="md:hidden">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Sidebar dạng block trên desktop, ẩn trên mobile -->
+<aside class="hidden lg:block w-64">
+    <!-- Sidebar content -->
+</aside>
+```
+
+**Các cách khác tương tự:**
+
+| Nhu cầu | Bootstrap | Tailwind |
+|---|---|---|
+| Ẩn mobile, hiện flex từ md | `d-none d-md-flex` | `hidden md:flex` |
+| Ẩn mobile, hiện block từ lg | `d-none d-lg-block` | `hidden lg:block` |
+| Hiện mobile, ẩn từ md | `d-md-none` | `md:hidden` |
+| Grid mobile 1 col, desktop 3 col | `grid-cols-1 lg:grid-cols-3` | `grid-cols-1 lg:grid-cols-3` |
+| Text size nhỏ mobile, lớn desktop | `text-sm lg:text-lg` | `text-sm lg:text-lg` |
+
+**Tóm tắt Tailwind responsive:**
+- Mobile-first: mặc định là mobile (< 640px)
+- Thêm prefix `md:`, `lg:`, `xl:` để đặt quy tắc cho breakpoint lớn hơn
+- Không cần viết media query, Tailwind tự generate
