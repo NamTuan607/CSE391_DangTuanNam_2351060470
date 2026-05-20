@@ -621,3 +621,290 @@ Mobile (< 768px):        Tablet (768-1023px):     Desktop (≥ 1024px):
 - Mobile-first: mặc định là mobile (< 640px)
 - Thêm prefix `md:`, `lg:`, `xl:` để đặt quy tắc cho breakpoint lớn hơn
 - Không cần viết media query, Tailwind tự generate
+
+---
+
+## PHẦN C — PHÂN TÍCH (20 điểm)
+
+### Câu C1 (10đ) — Tailwind vs CSS thuần
+
+**Lấy ví dụ từ PBT_04: Product Card (CSS thuần)**
+
+Giả sử từ PBT_04, bạn viết CSS thuần cho product card:
+
+**HTML (CSS thuần):**
+```html
+<div class="product-card">
+    <img src="product.jpg" alt="Product">
+    <div class="product-info">
+        <h3>Product Name</h3>
+        <p class="price">$99.99</p>
+        <button class="btn-primary">Thêm vào giỏ</button>
+    </div>
+</div>
+```
+
+**CSS (CSS thuần):**
+```css
+.product-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    max-width: 250px;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 16px;
+}
+
+.product-card h3 {
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+    color: #333;
+    font-weight: 600;
+}
+
+.product-card .price {
+    font-size: 1.25rem;
+    color: #e74c3c;
+    font-weight: bold;
+    margin: 8px 0 12px 0;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 10px 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-primary:active {
+    background-color: #1c5aa0;
+}
+```
+
+**File size: CSS file = ~1.2KB, HTML file = ~0.3KB**
+
+---
+
+**HTML (Tailwind):**
+```html
+<div class="bg-white rounded-lg shadow-md hover:shadow-lg hover:-translate-y-2 transition-all overflow-hidden max-w-xs">
+    <img src="product.jpg" alt="Product" class="w-full h-52 object-cover">
+    <div class="p-4">
+        <h3 class="text-lg font-semibold mb-2 text-gray-800">Product Name</h3>
+        <p class="text-xl font-bold text-red-600 mb-3">$99.99</p>
+        <button class="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 active:scale-95 transition">
+            Thêm vào giỏ
+        </button>
+    </div>
+</div>
+```
+
+**File size: HTML file = ~0.45KB (classes dài nhưng gzip nén tốt)**
+
+---
+
+### So sánh 3 tiêu chí:
+
+| Tiêu chí | CSS thuần | Tailwind |
+|---|---|---|
+| **HTML file size** | ~0.3KB | ~0.45KB (+50%) |
+| **CSS file size** | ~1.2KB | 0 (dùng CDN hoặc đã được bundle) |
+| **Tổng size ban đầu** | 1.5KB | 0.45KB (với Tailwind CDN, CSS được cache) |
+| **Maintainability** | Phải sửa 2 file (HTML + CSS); dễ quên style | Chỉ sửa HTML; styles ngay trong class |
+| **Dễ đọc** | Tương đối dễ (cần biết CSS) | Khó đọc lúc đầu (quá nhiều classes) |
+| **Dễ sửa** | Dễ sửa CSS riêng | Dễ sửa (không cần mở file CSS) |
+| **Reusability (@apply)** | CSS có thể tái sử dụng qua class | Dùng `@apply` trong CSS tùy chỉnh hoặc component template |
+
+**Ví dụ @apply (Tailwind):**
+```css
+/* Tạo utility custom */
+@layer components {
+    .btn-primary {
+        @apply px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 transition;
+    }
+}
+```
+
+Rồi dùng: `<button class="btn-primary">Nút</button>`
+
+---
+
+### Kết luận Câu C1:
+
+**HTML file size:** Tailwind HTML dài hơn (~50%) do class attributes dài, nhưng CSS file bị loại bỏ hoàn toàn  
+**Maintainability:** Tailwind tốt hơn vì chỉ sửa 1 file HTML, không cần tìm CSS  
+**Reusability:** CSS thuần dùng `.class-name`, Tailwind dùng `@apply` hoặc component templates
+
+---
+
+### Câu C2 (10đ) — Performance
+
+#### 1) Tại sao Tailwind CSS file NHỎ HƠN Bootstrap CSS?
+
+**Bootstrap CSS minified: ~150KB**  
+**Tailwind CSS (với PurgeCSS): ~5-10KB**
+
+**Lý do:**
+
+**Bootstrap (Pre-generated CSS):**
+- Bootstrap là **pre-generated** framework
+- Tất cả CSS rules được viết sẵn cho tất cả components
+- Navbar, buttons, cards, tables, forms, alerts, modals, etc. — tất cả đều có CSS
+- File CSS chứa styles cho những components bạn **có thể không dùng**
+- Phải include file 150KB ngay cả khi chỉ dùng 20% features
+
+```
+Bootstrap CSS = Navbar + Buttons + Cards + Tables + Forms + Alerts + 
+                Modals + Dropdowns + Tooltips + Popovers + Spinners + 
+                Progress bars + Pagination + Breadcrumbs + ... (tất cả)
+```
+
+**Tailwind CSS (On-demand generation):**
+- Tailwind là **utility-first**, generate CSS **khi nào cần**
+- Chỉ generate CSS cho các classes bạn **thực sự dùng** trong HTML
+- Dùng PurgeCSS/JIT: scan tất cả HTML files → tìm classes sử dụng → chỉ generate CSS cho những classes đó
+- Loại bỏ CSS **không dùng đến**
+
+```
+Tailwind CSS = Chỉ CSS cho: flex, p-4, text-lg, bg-blue-500, ... 
+               (những gì bạn dùng trong HTML)
+```
+
+**Ví dụ cụ thể:**
+- Nếu dùng Bootstrap nhưng không dùng modal → CSS modal vẫn được include (~2KB lãng phí)
+- Nếu dùng Tailwind mà không dùng modal → CSS modal không được generate (~0KB)
+
+---
+
+#### 2) Giải thích Tailwind PurgeCSS / JIT (Just-In-Time)
+
+**PurgeCSS (Tailwind v2 và trước):**
+```bash
+# File: tailwind.config.js
+module.exports = {
+  purge: [
+    './src/**/*.html',
+    './src/**/*.js',
+    './src/**/*.jsx'
+  ],
+  // ...
+}
+```
+
+**Quy trình PurgeCSS:**
+1. Scan tất cả files trong `./src/**/*.html` và `./src/**/*.js`
+2. Tìm tất cả strings giống Tailwind class names (regex pattern matching)
+3. Ví dụ: tìm `flex`, `p-4`, `bg-blue-500`, `hover:scale-105`, etc.
+4. Build CSS chỉ bao gồm những classes tìm được
+5. Loại bỏ CSS cho tất cả classes **không được sử dụng**
+
+**JIT Mode (Tailwind v3+):**
+- JIT = Just-In-Time compilation
+- Thay vì generate tất cả possibilities, chỉ compile CSS **khi bạn viết class**
+- Development mode: nhanh hơn, không cần rebuild
+- Production mode: tự động purge khi build
+
+**Ví dụ loại bỏ:**
+```html
+<!-- Sử dụng -->
+<div class="p-4 flex bg-blue-500">...</div>
+
+<!-- Tailwind sẽ generate CSS cho: p-4, flex, bg-blue-500 -->
+```
+
+```html
+<!-- KHÔNG sử dụng -->
+<div class="p-8 grid bg-red-500">...</div>
+
+<!-- Nếu chỉ dùng p-4 và bg-blue-500 ở nơi khác, 
+     p-8, grid, bg-red-500 sẽ bị purge/xóa -->
+```
+
+**Kết quả:**
+- Bootstrap: 150KB → Tailwind: 5-10KB (giảm 93-95%)
+
+---
+
+#### 3) Khi nào KHÔNG NÊN dùng TailwindCSS?
+
+**Tình huống 1: Dự án cần design custom rất khác Bootstrap/Tailwind**
+
+❌ **Vấn đề:**
+- Design riêng không khớp với spacing scale của Tailwind (16px, 32px, ...)
+- Cần khoảng cách như 13px, 27px, 45px (không có trong Tailwind mặc định)
+- Màu sắc custom: #A7B5C4, #D9E5F2 (không trong palette mặc định)
+- Animations riêng: morph, flip, shatter (Tailwind chỉ có basic transitions)
+- Animation duration: 250ms, 450ms (Tailwind mặc định: 150ms, 300ms, 500ms)
+
+```html
+<!-- Tailwind mặc định không có -->
+<div class="h-[13px] bg-[#A7B5C4] duration-[250ms]">...</div>
+<!-- Phải dùng arbitrary values, vô ích -->
+```
+
+✅ **Nên dùng:** CSS-in-JS (Styled Components, Emotion), SASS thuần
+
+---
+
+**Tình huống 2: App là Single Page Application (SPA) nặng với webpack bundling**
+
+❌ **Vấn đề:**
+- SPA như React, Vue, Angular có **custom build process** (webpack, Vite, etc.)
+- Tailwind CDN (script tag) chạy ở runtime → overhead
+- Tailwind JIT cần file watch → phức tạp khi integrate với webpack
+- HTML classes được generate động (không static trong file) → PurgeCSS không tìm thấy
+- Tailwind CSS file **vẫn được include dù không dùng**
+
+```javascript
+// React component với classes dynamic
+const [color, setColor] = useState('blue');
+
+export default function Button() {
+  return <button className={`bg-${color}-500`}>Click</button>;
+}
+// PurgeCSS không tìm thấy `bg-${color}-500` vì nó động
+// Phải dùng arbitrary values: `bg-[#...]` → không được purge
+```
+
+✅ **Nên dùng:** 
+- Styled Components / Emotion (CSS-in-JS)
+- PostCSS + SASS thuần + custom utilities
+- Tailwind nhưng cấu hình properly với webpack
+
+---
+
+### Tóm tắt:
+
+| Khi nào | Dùng gì |
+|---|---|
+| **Landing page, dashboard, MVP nhanh** | ✅ Tailwind |
+| **Design custom hoàn toàn khác** | ❌ Tailwind → ✅ SASS/CSS-in-JS |
+| **SPA với webpack + dynamic classes** | ⚠️ Tailwind (phức tạp) → ✅ CSS-in-JS |
+| **Project team lớn, cần consistency** | ✅ Tailwind (dễ maintain) |
+| **Performance critical, file size quan trọng** | ✅ Tailwind (5-10KB vs Bootstrap 150KB) |
+| **Học CSS từ đầu** | ❌ Tailwind → ✅ CSS thuần |
