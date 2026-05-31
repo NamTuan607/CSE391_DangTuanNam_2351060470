@@ -1,0 +1,236 @@
+:root {
+    color-scheme: light;
+    --bg: #f4f7fb;
+    --panel: rgba(255, 255, 255, 0.94);
+    --text: #102033;
+    --muted: #607086;
+    --accent: #2563eb;
+    --accent-2: #0f766e;
+    --border: rgba(148, 163, 184, 0.2);
+    --shadow: 0 24px 60px rgba(15, 23, 42, 0.14);
+}
+
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.16), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.14), transparent 35%),
+        var(--bg);
+}
+
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+#app {
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.shell {
+    width: min(100%, 1240px);
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.header p {
+    margin: 8px 0 0;
+    color: var(--muted);
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.button,
+.palette-input,
+.close,
+.play-toggle {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    box-shadow: var(--shadow);
+    border-radius: 16px;
+}
+
+.button,
+.play-toggle,
+.close {
+    cursor: pointer;
+    padding: 12px 16px;
+    font: inherit;
+    font-weight: 700;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 18px;
+}
+
+.gallery,
+.help-panel,
+.command-panel,
+.modal {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.gallery {
+    padding: 18px;
+}
+
+.gallery-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #111827;
+}
+
+.gallery-hero img {
+    width: 100%;
+    height: 440px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-caption {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    color: var(--muted);
+}
+
+.thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.thumb {
+    border: 2px solid transparent;
+    border-radius: 16px;
+    overflow: hidden;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+}
+
+.thumb.active {
+    border-color: var(--accent);
+}
+
+.thumb img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    display: block;
+}
+
+.help-panel {
+    padding: 20px;
+}
+
+.help-panel ul {
+    margin: 12px 0 0;
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.modal-backdrop,
+.palette-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.58);
+    display: none;
+    place-items: center;
+    padding: 24px;
+    z-index: 20;
+}
+
+.modal-backdrop.open,
+.palette-backdrop.open {
+    display: grid;
+}
+
+.modal {
+    width: min(100%, 900px);
+    overflow: hidden;
+}
+
+.modal img {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: cover;
+}
+
+.modal-body,
+.command-panel {
+    padding: 20px;
+}
+
+.command-panel {
+    width: min(100%, 560px);
+}
+
+.palette-input {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+}
+
+.command-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.command-item {
+    text-align: left;
+    width: 100%;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 14px;
+    padding: 12px 14px;
+    cursor: pointer;
+}
+
+.command-item.active {
+    background: #dbeafe;
+    border-color: var(--accent);
+}
+
+@media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    .gallery-hero img { height: 320px; }
+}
+
+@media (max-width: 640px) {
+    #app { padding: 16px; }
+    .header { flex-direction: column; align-items: start; }
+}
