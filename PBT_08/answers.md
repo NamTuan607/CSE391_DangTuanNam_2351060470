@@ -185,3 +185,76 @@ console.log(product.specs.ram);         // 16
 - Dòng `const { name, price, specs: { ram, color } } = product;` chỉ lấy các thuộc tính được chỉ định, nhưng không tạo biến tên `specs` ở scope ngoài.
 - Toán tử spread ở mức object tạo bản sao nông (shallow copy), nên `updated` là object mới và `product.price` không đổi.
 - `copy = { ...product }` chỉ sao chép tầng đầu. `copy.specs` và `product.specs` vẫn trỏ tới cùng một object con, nên sửa `copy.specs.ram` sẽ làm `product.specs.ram` thay đổi theo.
+
+## Phần C - Suy luận
+
+### Câu C1 - Refactor Code
+
+```js
+const processOrders = (orders) =>
+	orders
+		.filter(({ status, total }) => status === "completed" && total > 100000)
+		.map(({ id, customer, total }) => ({ id, customer, total, discount: total * 0.1, finalTotal: total * 0.9 }))
+		.sort((a, b) => b.finalTotal - a.finalTotal);
+```
+
+**Giải thích**
+
+- `filter` lấy đúng các đơn hoàn thành và có giá trị lớn hơn 100000.
+- `map` tạo object mới bằng destructuring và tính luôn `discount`, `finalTotal`.
+- `sort` sắp xếp giảm dần theo `finalTotal`.
+- Viết lại như trên giúp code ngắn hơn, ít biến trung gian hơn và dễ đọc hơn.
+
+### Câu C2 - Thiết kế API
+
+```js
+const miniArray = {
+	map(arr, fn) {
+		const result = [];
+		for (let i = 0; i < arr.length; i++) {
+			result.push(fn(arr[i], i, arr));
+		}
+		return result;
+	},
+
+	filter(arr, fn) {
+		const result = [];
+		for (let i = 0; i < arr.length; i++) {
+			if (fn(arr[i], i, arr)) {
+				result.push(arr[i]);
+			}
+		}
+		return result;
+	},
+
+	reduce(arr, fn, initialValue) {
+		let accumulator = initialValue;
+		let startIndex = 0;
+
+		if (accumulator === undefined) {
+			if (arr.length === 0) {
+				throw new TypeError("Reduce of empty array with no initial value");
+			}
+			accumulator = arr[0];
+			startIndex = 1;
+		}
+
+		for (let i = startIndex; i < arr.length; i++) {
+			accumulator = fn(accumulator, arr[i], i, arr);
+		}
+
+		return accumulator;
+	}
+};
+
+console.log(miniArray.map([1, 2, 3], x => x * 2));
+console.log(miniArray.filter([1, 2, 3, 4], x => x > 2));
+console.log(miniArray.reduce([1, 2, 3, 4], (a, b) => a + b, 0));
+```
+
+**Giải thích**
+
+- `map` tạo mảng mới có cùng độ dài, mỗi phần tử là kết quả của callback.
+- `filter` chỉ giữ lại phần tử thỏa điều kiện callback.
+- `reduce` dùng một accumulator để gộp từng phần tử thành một kết quả duy nhất.
+- `reduce` ở trên xử lý cả trường hợp có và không có `initialValue`, giống tinh thần của `Array.prototype.reduce`.
