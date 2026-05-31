@@ -45,6 +45,97 @@ console.log("Ngoài block:", a);
 - `var` bị hoist và được khởi tạo mặc định là `undefined`, nên `console.log(x)` in ra `undefined`.
 - `let` cũng được hoist nhưng nằm trong temporal dead zone, nên truy cập trước khi khai báo sẽ lỗi.
 - `const` không cho gán lại biến, nên `z = 20` gây `TypeError`.
+
+## Phần C - Suy luận
+
+### Câu C1 - Debug JavaScript
+
+**Các lỗi chính trong đoạn code**
+
+1. Điều kiện `if (phanTramGiam  100)` bị thiếu toán tử so sánh.
+   - Sửa thành `if (phanTramGiam < 0 || phanTramGiam > 100)`.
+2. `giaBan` và `phanTramGiam` có thể nhận chuỗi, làm phép tính sai hoặc tạo kết quả không mong muốn.
+   - Sửa bằng cách ép kiểu và kiểm tra `typeof`/`Number.isNaN` trước khi tính.
+3. `if (giaSauGiam = 0)` dùng phép gán thay vì so sánh.
+   - Sửa thành `if (giaSauGiam === 0)`.
+4. `var` trong vòng lặp dễ gây lỗi do phạm vi hàm và hoisting.
+   - Sửa bằng `let i` để mỗi vòng lặp có biến riêng.
+5. `giaBan` trong test đầu vào là chuỗi `"100000"`, nên cần chuyển thành số trước khi tính.
+   - Sửa bằng `Number(giaBan)` hoặc yêu cầu input số.
+6. Thiếu xử lý trường hợp phần trăm giảm âm hoặc lớn hơn 100.
+   - Sửa bằng kiểm tra biên hợp lệ trước khi tính.
+
+**Code đã sửa**
+
+```js
+function tinhGiaGiamGia(giaBan, phanTramGiam) {
+	if (typeof giaBan !== "number" || typeof phanTramGiam !== "number" || Number.isNaN(giaBan) || Number.isNaN(phanTramGiam)) {
+		return "Dữ liệu không hợp lệ";
+	}
+
+	if (phanTramGiam < 0 || phanTramGiam > 100) {
+		return "Phần trăm giảm không hợp lệ";
+	}
+
+	const giamGia = giaBan * phanTramGiam / 100;
+	const giaSauGiam = giaBan - giamGia;
+
+	if (giaSauGiam === 0) {
+		console.log("Sản phẩm miễn phí!");
+	}
+
+	return giaSauGiam;
+}
+
+const gia = tinhGiaGiamGia(100000, 20);
+console.log("Giá sau giảm: " + gia + "đ");
+
+const gia2 = tinhGiaGiamGia(50000, 110);
+console.log("Giá: " + gia2);
+
+for (let i = 0; i < 5; i++) {
+	setTimeout(function() {
+		console.log("Item " + i);
+	}, 1000);
+}
+```
+
+**Giải thích lỗi `var` trong vòng lặp**
+
+`var` có phạm vi hàm, không có phạm vi block. Khi `setTimeout` chạy sau 1 giây, vòng lặp đã kết thúc và `i` đã trở thành 5, nên in ra cùng một giá trị. Dùng `let` sẽ tạo một biến riêng cho từng vòng lặp, nên mỗi callback giữ đúng giá trị tại thời điểm được tạo.
+
+### Câu C2 - Bài toán thực tế
+
+**Cách xử lý**
+
+- Tính tổng tiền món ăn từ danh sách `items`.
+- Áp dụng giảm giá theo ngưỡng tổng: trên 1 triệu giảm 15%, trên 500k giảm 10%.
+- Nếu là Wednesday thì cộng thêm 5% giảm giá.
+- Tính VAT 8% trên số tiền sau giảm giá.
+- Tip là tùy chọn, mặc định 5% trên số tiền sau giảm giá.
+
+**Lưu ý**
+
+- Em tính các khoản giảm theo kiểu cộng dồn phần trăm trên tổng trước giảm.
+- VAT và tip được tính sau khi đã giảm giá.
+
+**Ví dụ đầu ra**
+
+```js
+const items = [
+	{ name: "Phở bò", price: 65000, quantity: 2 },
+	{ name: "Trà đá", price: 5000, quantity: 3 },
+	{ name: "Bún chả", price: 55000, quantity: 1 },
+];
+
+const bill = generateRestaurantBill(items, {
+	isWednesday: false,
+	tipPercent: 5,
+});
+
+console.log(bill);
+```
+
 - `const` chỉ cố định tham chiếu, không làm mảng trở thành bất biến; `push` vẫn đổi được nội dung mảng.
 - Biến `a` trong block là biến khác với `a` bên ngoài do phạm vi block.
 
