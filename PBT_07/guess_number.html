@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Game: Đoán số</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #111827;
+        }
+
+        .card {
+            width: min(92vw, 520px);
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin: 0 0 20px;
+            color: #475569;
+        }
+
+        button {
+            appearance: none;
+            border: 0;
+            border-radius: 999px;
+            padding: 14px 22px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            cursor: pointer;
+        }
+
+        button:hover {
+            filter: brightness(1.05);
+        }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <h1>Mini Game: Đoán số</h1>
+        <p>Nhấn nút bên dưới để bắt đầu. Game sẽ dùng <strong>prompt()</strong> và <strong>alert()</strong> để trả lời Cao hơn / Thấp hơn / Đúng rồi!</p>
+        <button onclick="startGuessGame()">Bắt đầu chơi</button>
+    </main>
+    <script src="guess.js"></script>
+</body>
+</html>
