@@ -127,3 +127,118 @@ BUTTON
 ```
 
 `stopPropagation()` chặn sự kiện tiếp tục bubbling lên cha, nên chỉ còn log ở button.
+
+## Phần C - Debug & Phân tích
+
+### Câu C1 - Debug DOM Code
+
+**Các lỗi và cách sửa**
+
+1. `document.querySelector("#decrementBtn").addEventListener("onclick", ...)` sai loại event.
+   - Sửa thành `addEventListener("click", ...)`.
+2. `countDisplay = count;` đang gán lại biến DOM thay vì cập nhật nội dung hiển thị.
+   - Sửa thành `countDisplay.textContent = count;`.
+3. `historyList.innerHTML = null;` không phải cách xóa chuẩn cho danh sách.
+   - Sửa thành `historyList.textContent = "";` hoặc `historyList.innerHTML = "";`.
+4. Trong `clearHistory`, `item.remove;` chỉ tham chiếu hàm chứ không gọi hàm.
+   - Sửa thành `item.remove();`.
+5. Khi lưu `count` vào `localStorage`, đọc lại bằng `localStorage.getItem("count")` trả về chuỗi.
+   - Cần ép kiểu về số khi load, ví dụ `count = Number(localStorage.getItem("count")) || 0;`.
+6. Dùng `innerHTML` để hiển thị count là không cần thiết và dễ mở rộng thành thói quen xấu.
+   - Sửa thành `textContent`.
+7. Hàm `deleteHistory(element)` nên xóa đúng phần tử `li`, và có thể gọi trực tiếp `element.remove()`.
+   - Cách hiện tại cũng chạy, nhưng viết gọn hơn là `element.remove()`.
+8. Khi load dữ liệu từ `localStorage`, `historyList.innerHTML = localStorage.getItem("history")` bị bỏ qua hoàn toàn trong code gốc.
+   - Cần khôi phục cả count lẫn history.
+
+**Code đã sửa**
+
+```js
+const countDisplay = document.querySelector(".count");
+const historyList = document.getElementById("history");
+
+let count = Number(localStorage.getItem("count")) || 0;
+
+function renderCount() {
+	countDisplay.textContent = count;
+}
+
+document.querySelector("#incrementBtn").addEventListener("click", function () {
+	count++;
+	renderCount();
+
+	const li = document.createElement("li");
+	li.textContent = "Count changed to " + count;
+	li.addEventListener("click", function () {
+		deleteHistory(this);
+	});
+	historyList.appendChild(li);
+});
+
+document.querySelector("#decrementBtn").addEventListener("click", function () {
+	count--;
+	renderCount();
+});
+
+document.querySelector("#resetBtn").addEventListener("click", () => {
+	count = 0;
+	renderCount();
+	historyList.textContent = "";
+});
+
+function deleteHistory(element) {
+	element.remove();
+}
+
+document.querySelector("#clearHistory").addEventListener("click", () => {
+	const items = historyList.querySelectorAll("li");
+	items.forEach(item => item.remove());
+});
+
+window.addEventListener("beforeunload", () => {
+	localStorage.setItem("count", String(count));
+	localStorage.setItem("history", historyList.innerHTML);
+});
+
+window.addEventListener("load", () => {
+	renderCount();
+	historyList.innerHTML = localStorage.getItem("history") || "";
+});
+```
+
+### Câu C2 - Performance
+
+**1) Vì sao bind event lên 1000 elements riêng lẻ là bad practice?**
+
+- Tốn bộ nhớ hơn vì mỗi element giữ một listener riêng.
+- Tốn thời gian khởi tạo vì phải attach 1000 handlers.
+- Khó bảo trì khi elements được tạo/xóa động.
+- Nếu render lại list, phải bind lại toàn bộ listeners.
+
+**Event Delegation giải quyết thế nào?**
+
+- Chỉ bind 1 listener lên phần tử cha, ví dụ container list.
+- Khi user click, dùng `event.target` hoặc `closest()` để xác định item thật sự được thao tác.
+- Ít listener hơn, dễ quản lý với DOM động, phù hợp cho list lớn.
+
+**2) Refactor bằng `DocumentFragment`**
+
+```js
+const list = document.querySelector("#list");
+const fragment = document.createDocumentFragment();
+
+for (let i = 0; i < 1000; i++) {
+	const item = document.createElement("li");
+	item.textContent = `Item ${i + 1}`;
+	fragment.appendChild(item);
+}
+
+list.appendChild(fragment);
+```
+
+**Vì sao nhanh hơn?**
+
+- `DocumentFragment` là vùng chứa tạm trong bộ nhớ, chưa gắn trực tiếp vào DOM.
+- Ta tạo 1000 node trong fragment trước, rồi append một lần duy nhất vào DOM.
+- Nhờ đó trình duyệt giảm số lần reflow/repaint so với việc append từng phần tử một.
+- Kết quả là render nhanh hơn và mượt hơn, đặc biệt với danh sách lớn.
